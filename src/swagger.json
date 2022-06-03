@@ -1,0 +1,354 @@
+{
+   "openapi": "3.0.3",
+   "info": {
+      "title": "Jobs API",
+      "description": "A simple jobs API",
+      "version": "1.0.0",
+      "license": {
+         "name": "MIT",
+         "url": "https://opensource.org/licenses/MIT"
+      }
+   },
+   "tags": [
+      {
+         "name": "Job",
+         "description": "Everything about the job post"
+      },
+      {
+         "name": "Company",
+         "description": "About the company"
+      }
+   ],
+   "paths": {
+      "/jobs": {
+         "get": {
+            "tags": [
+               "Job"
+            ],
+            "summary": "Get all jobs in system",
+            "responses": {
+               "200": {
+                  "description": "A JSON array of user names",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/job/{jobId}": {
+         "get": {
+            "tags": [
+               "Job"
+            ],
+            "summary": "Returns a user by ID.",
+            "parameters": [
+               {
+                  "in": "path",
+                  "name": "jobId",
+                  "required": true,
+                  "description": "Job's id",
+                  "schema": {
+                     "type": "integer",
+                     "minimum": 1
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Ok",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "patch": {
+            "tags": [
+               "Job"
+            ],
+            "summary": "Update a property of job",
+            "parameters": [
+               {
+                  "in": "path",
+                  "name": "jobId",
+                  "required": true,
+                  "description": "Job's id",
+                  "schema": {
+                     "type": "integer",
+                     "format": "int64",
+                     "minimum": 1
+                  }
+               }
+            ],
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "type": "object",
+                        "properties": {
+                           "name": {}
+                        }
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "description": "Updated",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "delete": {
+            "tags": [
+               "Job"
+            ],
+            "summary": "Delete a job",
+            "parameters": [
+               {
+                  "in": "path",
+                  "name": "jobId",
+                  "required": true,
+                  "description": "Job's id",
+                  "schema": {
+                     "type": "integer",
+                     "format": "int64",
+                     "minimum": 1
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Ok",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/job": {
+         "post": {
+            "tags": [
+               "Job"
+            ],
+            "summary": "Creates a job",
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "type": "object",
+                        "properties": {
+                           "name": {}
+                        }
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "201": {
+                  "description": "created",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/companies": {
+         "get": {
+            "tags": [
+               "Job"
+            ],
+            "summary": "Get all jobs in system",
+            "responses": {
+               "200": {
+                  "description": "A JSON array of user names",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/company/{companyId}": {
+         "get": {
+            "tags": [
+               "Company"
+            ],
+            "summary": "Returns a Company by ID.",
+            "parameters": [
+               {
+                  "in": "path",
+                  "name": "companyId",
+                  "required": true,
+                  "description": "Company's id",
+                  "schema": {
+                     "type": "integer",
+                     "minimum": 1
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Ok",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "patch": {
+            "tags": [
+               "Company"
+            ],
+            "summary": "Update a property of Company",
+            "parameters": [
+               {
+                  "in": "path",
+                  "name": "companyID",
+                  "required": true,
+                  "description": "Company's id",
+                  "schema": {
+                     "type": "integer",
+                     "format": "int64",
+                     "minimum": 1
+                  }
+               }
+            ],
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "type": "object",
+                        "properties": {
+                           "name": {}
+                        }
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "description": "Updated",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "delete": {
+            "tags": [
+               "Company"
+            ],
+            "summary": "Delete a Company",
+            "parameters": [
+               {
+                  "in": "path",
+                  "name": "companyId",
+                  "required": true,
+                  "description": "Company's id",
+                  "schema": {
+                     "type": "integer",
+                     "format": "int64",
+                     "minimum": 1
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Ok",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/company": {
+         "post": {
+            "tags": [
+               "Company"
+            ],
+            "summary": "Creates a Company",
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "type": "object",
+                        "properties": {
+                           "name": {}
+                        }
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "201": {
+                  "description": "created",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}
