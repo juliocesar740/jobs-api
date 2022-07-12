@@ -22,7 +22,8 @@ module.exports = {
     'space-in-parens': 'error',
     'no-multiple-empty-lines': 'error',
     'prefer-const': 'error',
-    'prettier/prettier': 2
+    'prettier/prettier': 2,
+    '@typescript-eslint/no-namespace': 'off'
   },
   plugins: ['@typescript-eslint', 'prettier']
 };
