@@ -43,4 +43,4 @@ userSchema.pre('save', function (next) {
   next();
 });
 
-export default model('Job', userSchema);
+export default model('User', userSchema);
