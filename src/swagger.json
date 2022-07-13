@@ -28,12 +28,11 @@
             "summary": "Get all jobs in system",
             "responses": {
                "200": {
-                  "description": "A JSON array of user names",
+                  "description": "A JSON array of jobs stored",
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
-                           "items": {}
+                           "$ref": "#/schemas/ArrayJobs"
                         }
                      }
                   }
@@ -41,7 +40,7 @@
             }
          }
       },
-      "/job/{jobId}": {
+      "/job/{job_id}": {
          "get": {
             "tags": [
                "Job"
@@ -50,9 +49,9 @@
             "parameters": [
                {
                   "in": "path",
-                  "name": "jobId",
+                  "name": "job_id",
                   "required": true,
-                  "description": "Job's id",
+                  "description": "ID of job to return",
                   "schema": {
                      "type": "integer",
                      "minimum": 1
@@ -61,15 +60,20 @@
             ],
             "responses": {
                "200": {
-                  "description": "Ok",
+                  "description": "Job found",
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
-                           "items": {}
+                           "$ref": "#/schemas/Job"
                         }
                      }
                   }
+               },
+               "400": {
+                  "description": "Invalid ID supplied"
+               },
+               "404": {
+                  "description": "Job not found"
                }
             }
          },
@@ -81,40 +85,44 @@
             "parameters": [
                {
                   "in": "path",
-                  "name": "jobId",
+                  "name": "job_id",
                   "required": true,
-                  "description": "Job's id",
+                  "description": "ID of job to be updated",
                   "schema": {
                      "type": "integer",
                      "format": "int64",
                      "minimum": 1
                   }
-               }
-            ],
-            "requestBody": {
-               "required": true,
-               "content": {
-                  "application/json": {
-                     "schema": {
-                        "type": "object",
-                        "properties": {
-                           "name": {}
-                        }
-                     }
+               },
+               {
+                  "in": "body",
+                  "name": "body",
+                  "required": true,
+                  "description": "Job object",
+                  "schema": {
+                     "$ref": "#/schemas/Job"
                   }
                }
-            },
+            ],
             "responses": {
                "200": {
-                  "description": "Updated",
+                  "description": "Job updated",
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
-                           "items": {}
+                           "$ref": "#/schemas/Job"
                         }
                      }
                   }
+               },
+               "400": {
+                  "description": "Invalid ID supplied"
+               },
+               "404": {
+                  "description": "Job not found"
+               },
+               "500": {
+                  "description": "Server error"
                }
             }
          },
@@ -126,9 +134,9 @@
             "parameters": [
                {
                   "in": "path",
-                  "name": "jobId",
+                  "name": "job_id",
                   "required": true,
-                  "description": "Job's id",
+                  "description": "ID of job to be deleted",
                   "schema": {
                      "type": "integer",
                      "format": "int64",
@@ -138,12 +146,11 @@
             ],
             "responses": {
                "200": {
-                  "description": "Ok",
+                  "description": "Job deleted",
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
-                           "items": {}
+                           "$ref": "#/schemas/JobDelete"
                         }
                      }
                   }
@@ -157,30 +164,33 @@
                "Job"
             ],
             "summary": "Creates a job",
-            "requestBody": {
-               "required": true,
-               "content": {
-                  "application/json": {
-                     "schema": {
-                        "type": "object",
-                        "properties": {
-                           "name": {}
-                        }
-                     }
+            "parameters": [
+               {
+                  "in": "body",
+                  "name": "body",
+                  "required": true,
+                  "description": "Job object",
+                  "schema": {
+                     "$ref": "#/schemas/Job"
                   }
                }
-            },
+            ],
             "responses": {
                "201": {
                   "description": "created",
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
-                           "items": {}
+                           "$ref": "#/schemas/Job"
                         }
                      }
                   }
+               },
+               "400": {
+                  "description": "Invalid ID supplied"
+               },
+               "404": {
+                  "description": "Job not found"
                }
             }
          }
@@ -188,17 +198,16 @@
       "/companies": {
          "get": {
             "tags": [
-               "Job"
+               "Company"
             ],
             "summary": "Get all jobs in system",
             "responses": {
                "200": {
-                  "description": "A JSON array of user names",
+                  "description": "A JSON array of companies",
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
-                           "items": {}
+                           "$ref": "#/schemas/ArrayCompanies"
                         }
                      }
                   }
@@ -206,7 +215,7 @@
             }
          }
       },
-      "/company/{companyId}": {
+      "/company/{company_id}": {
          "get": {
             "tags": [
                "Company"
@@ -215,9 +224,9 @@
             "parameters": [
                {
                   "in": "path",
-                  "name": "companyId",
+                  "name": "company_id",
                   "required": true,
-                  "description": "Company's id",
+                  "description": "ID of company to return",
                   "schema": {
                      "type": "integer",
                      "minimum": 1
@@ -226,15 +235,7 @@
             ],
             "responses": {
                "200": {
-                  "description": "Ok",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "type": "array",
-                           "items": {}
-                        }
-                     }
-                  }
+                  "description": "Ok"
                }
             }
          },
@@ -246,9 +247,9 @@
             "parameters": [
                {
                   "in": "path",
-                  "name": "companyID",
+                  "name": "company_iD",
                   "required": true,
-                  "description": "Company's id",
+                  "description": "ID of company to be updated",
                   "schema": {
                      "type": "integer",
                      "format": "int64",
@@ -256,30 +257,9 @@
                   }
                }
             ],
-            "requestBody": {
-               "required": true,
-               "content": {
-                  "application/json": {
-                     "schema": {
-                        "type": "object",
-                        "properties": {
-                           "name": {}
-                        }
-                     }
-                  }
-               }
-            },
             "responses": {
                "200": {
-                  "description": "Updated",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "type": "array",
-                           "items": {}
-                        }
-                     }
-                  }
+                  "description": "Updated"
                }
             }
          },
@@ -291,9 +271,9 @@
             "parameters": [
                {
                   "in": "path",
-                  "name": "companyId",
+                  "name": "company_id",
                   "required": true,
-                  "description": "Company's id",
+                  "description": "ID of company to be deleted",
                   "schema": {
                      "type": "integer",
                      "format": "int64",
@@ -307,8 +287,7 @@
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
-                           "items": {}
+                           "$ref": "#/schemas/CompanyDelete"
                         }
                      }
                   }
@@ -322,31 +301,153 @@
                "Company"
             ],
             "summary": "Creates a Company",
-            "requestBody": {
-               "required": true,
-               "content": {
-                  "application/json": {
-                     "schema": {
-                        "type": "object",
-                        "properties": {
-                           "name": {}
-                        }
-                     }
+            "parameters": [
+               {
+                  "in": "body",
+                  "name": "body",
+                  "required": true,
+                  "description": "Job object",
+                  "schema": {
+                     "$ref": "#/schemas/Company"
                   }
                }
-            },
+            ],
             "responses": {
                "201": {
                   "description": "created",
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
-                           "items": {}
+                           "$ref": "#/schemas/Company"
                         }
                      }
                   }
+               },
+               "400": {
+                  "description": "Invalid ID supplied"
+               },
+               "404": {
+                  "description": "Company not found"
                }
+            }
+         }
+      }
+   },
+   "securityschemas": {
+      "petstore_auth": {
+         "type": "oauth2",
+         "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+         "flow": "implicit",
+         "scopes": {
+            "write:pets": "modify pets in your account",
+            "read:pets": "read your pets"
+         }
+      },
+      "api_key": {
+         "type": "apiKey",
+         "name": "api_key",
+         "in": "header"
+      }
+   },
+   "schemas": {
+      "Job": {
+         "type": "object",
+         "properties": {
+            "id": {
+               "type": "string"
+            },
+            "title": {
+               "type": "string"
+            },
+            "company": {
+               "type": "object",
+               "schema": "#/schemas/Company"
+            },
+            "remote": {
+               "type": "boolean"
+            },
+            "salary": {
+               "type": "integer",
+               "format": "int32"
+            },
+            "description": {
+               "type": "string"
+            },
+            "available": {
+               "type": "boolean"
+            },
+            "created_at": {
+               "type": "string",
+               "format": "date-time"
+            },
+            "updated_at": {
+               "type": "string",
+               "format": "date-time"
+            }
+         }
+      },
+      "Company": {
+         "type": "object",
+         "properties": {
+            "id": {
+               "type": "string"
+            },
+            "name": {
+               "type": "string"
+            },
+            "location": {
+               "type": "object"
+            },
+            "description": {
+               "type": "string"
+            },
+            "created_at": {
+               "type": "string",
+               "format": "date-time"
+            },
+            "updated_at": {
+               "type": "string",
+               "format": "date-time"
+            }
+         }
+      },
+      "ArrayJobs": {
+         "type": "object",
+         "properties": {
+            "jobs": {
+               "type": "array",
+               "items": {
+                  "$ref": "#/schemas/Job"
+               }
+            }
+         }
+      },
+      "ArrayCompanies": {
+         "type": "object",
+         "properties": {
+            "companies": {
+               "type": "array",
+               "items": {
+                  "$ref": "#/schemas/Company"
+               }
+            }
+         }
+      },
+      "JobDelete": {
+         "type": "object",
+         "properties": {
+            "message": {
+               "type": "string",
+               "example": "Job deleted successfully"
+            }
+         }
+      },
+      "CompanyDelete": {
+         "type": "object",
+         "properties": {
+            "message": {
+               "type": "string",
+               "example": "Company deleted successfully"
             }
          }
       }

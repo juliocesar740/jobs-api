@@ -1,30 +1,31 @@
 import { Schema, model } from 'mongoose';
 
-const jobSchema = new Schema({
-  title: {
+const userSchema = new Schema({
+  name: {
     type: String,
     required: true
   },
-  company: {
+  email: {
+    type: String,
     required: true,
-    type: Schema.Types.ObjectId,
-    ref: 'Company'
+    unique: true
   },
-  remote: {
-    type: Boolean,
-    required: true
-  },
-  salary: {
+  password: {
     type: Number,
     required: true
   },
-  description: {
-    type: String,
-    required: false
+  jobs: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Job'
+    }
+  ],
+  jobs_applies: {
+    type: Schema.Types.ObjectId,
+    ref: 'Job'
   },
-  avaliable: {
-    type: Boolean,
-    required: true
+  auth_token: {
+    type: String
   },
   created_at: {
     type: Date,
@@ -37,9 +38,9 @@ const jobSchema = new Schema({
 });
 
 // Update the date every time a job entity is created or updated
-jobSchema.pre('save', function (next) {
+userSchema.pre('save', function (next) {
   this.updated_at = new Date();
   next();
 });
 
-export default model('Job', jobSchema);
+export default model('Job', userSchema);
