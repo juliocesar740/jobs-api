@@ -24,7 +24,18 @@ const jobSchema = new Schema({
   },
   avaliable: {
     type: Boolean,
-    required: true
+    required: true,
+    default: true
+  },
+  users_pending: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
+  user_selected: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   },
   created_at: {
     type: Date,

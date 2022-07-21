@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Job from '../Models/job';
+import User from '../Models/user';
 
 class JobController {
   /**
@@ -16,7 +17,7 @@ class JobController {
 
   static async getJob(req: Request, res: Response) {
     try {
-      const job = await Job.findById(req.params.id).populate('company');
+      const job = await Job.findById(req.params.job_id).populate('company');
 
       return job
         ? res.json({ job: job })
@@ -32,19 +33,22 @@ class JobController {
       const newJob = await Job.create(req.body);
       return res.json({ newJob: newJob });
     } catch (error) {
+      console.log(error);
       return res.status(500).json({ msg: 'Server error' });
     }
   }
 
   static async patchJob(req: Request, res: Response) {
     try {
-      const job = await Job.findById(req.params.id);
+      const job = await Job.findById(req.params.job_id);
 
       if (!job) {
         res.status(404).json({ msg: 'Job not found' });
       }
 
-      job.salary = req.body.salary;
+      for (const [key, value] of Object.entries(req.body)) {
+        job[key] = value;
+      }
       const updatedJob = await job.save();
 
       return res.json({ job: updatedJob });
@@ -64,6 +68,38 @@ class JobController {
       await Job.deleteOne({ _id: job._id });
 
       return res.json({ msg: 'Job deleted' });
+    } catch (error) {
+      return res.status(500).json({ msg: 'Server error' });
+    }
+  }
+
+  static async selectUser(req: Request, res: Response) {
+    try {
+      const job = await Job.findById(req.params.job_id).populate(
+        'users_pending'
+      );
+      const user = await User.findById(req.params.user_id);
+
+      if (!job || !user) {
+        const model = job === null ? 'Job' : 'User';
+        return res.status(404).json({ msg: `${model} not found` });
+      }
+
+      const findUser = job.users_pending.find(
+        (userPending: typeof user) => user.id === userPending.id
+      );
+
+      if (!findUser) {
+        return res.status(400).json({ msg: 'There is not this user' });
+      }
+
+      job.user_selected = user.id;
+      await job.save();
+
+      user.jobs.push(job.id);
+      await user.save();
+
+      return res.status(200).json({ msg: 'User selected for the job' });
     } catch (error) {
       return res.status(500).json({ msg: 'Server error' });
     }

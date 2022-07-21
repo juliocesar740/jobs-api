@@ -11,7 +11,7 @@ const userSchema = new Schema({
     unique: true
   },
   password: {
-    type: Number,
+    type: String,
     required: true
   },
   jobs: [
@@ -20,13 +20,12 @@ const userSchema = new Schema({
       ref: 'Job'
     }
   ],
-  jobs_applies: {
-    type: Schema.Types.ObjectId,
-    ref: 'Job'
-  },
-  auth_token: {
-    type: String
-  },
+  jobs_applies: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Job'
+    }
+  ],
   created_at: {
     type: Date,
     default: new Date()
