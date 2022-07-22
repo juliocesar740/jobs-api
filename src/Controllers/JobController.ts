@@ -46,10 +46,13 @@ class JobController {
         res.status(404).json({ msg: 'Job not found' });
       }
 
-      for (const [key, value] of Object.entries(req.body)) {
-        job[key] = value;
+      for (const [key, value] of Object.entries(req.body) as [
+        keyof typeof job,
+        never
+      ][]) {
+        if (job) job[key] = value;
       }
-      const updatedJob = await job.save();
+      const updatedJob = await job?.save();
 
       return res.json({ job: updatedJob });
     } catch (error) {
@@ -65,7 +68,7 @@ class JobController {
         res.status(404).json({ msg: 'Job not found' });
       }
 
-      await Job.deleteOne({ _id: job._id });
+      await Job.deleteOne({ _id: job?._id });
 
       return res.json({ msg: 'Job deleted' });
     } catch (error) {
@@ -86,7 +89,7 @@ class JobController {
       }
 
       const findUser = job.users_pending.find(
-        (userPending: typeof user) => user.id === userPending.id
+        (userPending: any) => user.id === userPending.id
       );
 
       if (!findUser) {

@@ -40,14 +40,17 @@ class UserController {
       if (!user) {
         res.status(404).json({ msg: 'User not found' });
       }
-      for (const [key, value] of Object.entries(req.body)) {
-        user[key] = value;
+      for (const [key, value] of Object.entries(req.body) as [
+        keyof typeof user,
+        never
+      ][]) {
+        if (user) user[key] = value;
       }
-
-      const updatedUser = await user.save();
-
-      return res.json({ User: updatedUser });
+      return res.send(user);
+      //   const updatedUser = await user?.save();
+      //   return res.json({ User: updatedUser });
     } catch (error) {
+      console.log(error);
       return res.status(500).json({ msg: 'Server error' });
     }
   }
@@ -63,7 +66,7 @@ class UserController {
       res.clearCookie('token');
       res.clearCookie('role');
 
-      await user.deleteOne({ _id: user._id });
+      await user?.deleteOne({ _id: user._id });
 
       return res.json({ msg: 'User deleted' });
     } catch (error) {
@@ -82,7 +85,7 @@ class UserController {
       }
 
       const findUser = job.users_pending.find(
-        (userPending: typeof user) => user.id === userPending.id
+        (userPending: any) => user.id === userPending.id
       );
 
       if (!findUser) {
@@ -91,7 +94,7 @@ class UserController {
 
       switch (action) {
         case 'apply':
-          job.user_pending.push(user.id);
+          job.users_pending.push(user.id);
           await job.save();
 
           user.jobs_applies.push(job.id);
@@ -100,13 +103,13 @@ class UserController {
           return res.status(200).json({ msg: 'Job applied by the user' });
           break;
         case 'delete':
-          job.user_pending = job.user_pending.filter(
-            (userPending: typeof user) => userPending.id != user.id
+          job.users_pending = job.users_pending.filter(
+            (userPending: any) => userPending.id != user.id
           );
           await job.save();
 
           user.jobs_applies = user.jobs_applies.filter(
-            (jobApply: typeof job) => jobApply.id != user.id
+            (jobApply: any) => jobApply.id != user.id
           );
           await user.save();
 

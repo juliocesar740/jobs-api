@@ -12,7 +12,7 @@ router.get('/user/:id', (req, res) => {
 });
 
 router.patch('/user/:id', auth.checkAuth, async (req, res, next) => {
-  if (!(await auth.checkRole('use', req, res, next))) {
+  if (!(await auth.checkRole('user', req, res, next))) {
     return res.status(403).json({ msg: 'Forbidden' });
   }
   return UserController.patchUser(req, res);

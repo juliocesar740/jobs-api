@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import dotenv from 'dotenv';
 dotenv.config();
 import { Request, Response, NextFunction } from 'express';
@@ -17,14 +18,19 @@ async function signUp(req: Request, res: Response, next: NextFunction) {
     // the name of the model
     const model_name = req.originalUrl.split('/')[2];
 
-    // get the model class
-    const Model = model_name === 'user' ? User : Company;
+    let entity;
 
-    // create user
-    const entity = await Model.create({
-      ...req.body,
-      password: await bcrypt.hash(req.body.password, 10)
-    });
+    if (model_name === 'user') {
+      entity = await User.create({
+        ...req.body,
+        password: await bcrypt.hash(req.body.password, 10)
+      });
+    } else {
+      entity = await Company.create({
+        ...req.body,
+        password: await bcrypt.hash(req.body.password, 10)
+      });
+    }
 
     // create token
     const token = jwt.sign(
@@ -58,8 +64,15 @@ async function login(req: Request, res: Response, next: NextFunction) {
     // get the model class
     const Model = model_name === 'user' ? User : Company;
 
-    // find entity
-    const entity = await Model.findOne({ email: req.body.email });
+    let entity;
+
+    if (model_name === 'user') {
+      // find entity
+      entity = await User.findOne({ email: req.body.email });
+    } else {
+      // find entity
+      entity = await Company.findOne({ email: req.body.email });
+    }
 
     if (
       !entity ||
@@ -127,8 +140,9 @@ function checkIfEntityIsLoggedIn(
   res: Response,
   next: NextFunction
 ) {
-  // eslint-disable-next-line prettier/prettier
-  return req.cookies.token ? res.status(400).json({msg:'There is an entity logged in, you need to log out'}) : next();
+  return req.cookies.token
+    ? res.status(400).json({ msg: 'There is an entity logged in, you need to log out' })
+    : next();
 }
 
 export default {

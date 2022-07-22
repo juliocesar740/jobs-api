@@ -42,12 +42,15 @@ class CompanyController {
       if (!company) {
         return res.status(404).json({ msg: 'Company not found' });
       }
-      for (const [key, value] of Object.entries(req.body)) {
-        company[key] = value;
-      }
-      const updatedCompany = await company.save();
+      for (const [key, value] of Object.entries(req.body) as [
+        keyof typeof company,
+        never
+      ][]) {
+        if (company) company[key] = value;
+        const updatedCompany = await company.save();
 
-      return res.json({ Company: updatedCompany });
+        return res.json({ Company: updatedCompany });
+      }
     } catch (error) {
       console.log(error);
       return res.status(500).json({ msg: 'Server error' });
@@ -62,7 +65,7 @@ class CompanyController {
         res.status(404).json({ msg: 'company not found' });
       }
 
-      await company.deleteOne({ _id: company._id });
+      await company?.deleteOne({ _id: company._id });
 
       return res.json({ msg: 'company deleted' });
     } catch (error) {
